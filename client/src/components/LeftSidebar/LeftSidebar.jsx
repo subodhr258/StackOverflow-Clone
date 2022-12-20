@@ -12,7 +12,7 @@ const LeftSidebar = () => {
         </NavLink>
         <div className="side-nav-div">
           <div className="side-nav-div2">
-            <p className="public">PUBLIC :-</p>
+            {/* <p className="public">PUBLIC :-</p> */}
             <NavLink
               to="/Questions"
               className="side-nav-links"
@@ -30,6 +30,13 @@ const LeftSidebar = () => {
               activeclass="active"
             >
               <p>Users</p>
+            </NavLink>
+            <NavLink
+              to="/Community"
+              className="side-nav-links"
+              activeclass="active"
+            >
+              <p>Community</p>
             </NavLink>
           </div>
         </div>

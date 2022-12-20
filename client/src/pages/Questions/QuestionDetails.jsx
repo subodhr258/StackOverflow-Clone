@@ -44,6 +44,8 @@ const QuestionDetails = () => {
         );
       }
     }
+    let textarea = document.getElementById("answer-textarea");
+    textarea.value = "";
   };
   const handleShare = () => {
     copy(url + location.pathname);
@@ -58,6 +60,7 @@ const QuestionDetails = () => {
   const handleDownvote = () => {
     dispatch(voteQuestion(id, "downVote", User.result._id));
   };
+  
   return (
     <div className="question-details-page">
       {questionsList.data === null ? (
@@ -142,7 +145,7 @@ const QuestionDetails = () => {
                   >
                     <textarea
                       name=""
-                      id=""
+                      id="answer-textarea"
                       cols="30"
                       rows="10"
                       onChange={(e) => setAnswer(e.target.value)}

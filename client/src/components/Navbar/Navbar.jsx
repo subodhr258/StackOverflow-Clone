@@ -46,30 +46,35 @@ const NavBar = () => {
           For Teams
         </Link>
         <form>
+          <div className="form-contents">
           <input type="text" placeholder="Search..." />
           <img src={search} alt="search" width="18" className="search-icon" />
+          </div>
         </form>
         {User === null ? (
           <Link to="/Auth" className="nav-item nav-links">
             Log in
           </Link>
         ) : (
-          <>
+          <div className="nav-avatar-btn">
             <Avatar
               backgroundColor="#009dff"
               px="10px"
               py="7px"
-              borderRadius="50%"
+              borderRadius="10px"
               color="white"
             >
-              <Link to={`/Users/${User?.result?._id}`} style={{ color: "white", textDecoration: "None" }}>
+              <Link
+                to={`/Users/${User?.result?._id}`}
+                style={{ color: "white", textDecoration: "None" }}
+              >
                 {User.result.name.charAt(0).toUpperCase()}
               </Link>
             </Avatar>
             <button className="nav-item nav-links" onClick={handleLogout}>
               Log out
             </button>
-          </>
+          </div>
         )}
       </div>
     </nav>

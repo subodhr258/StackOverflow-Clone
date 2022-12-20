@@ -11,8 +11,8 @@ const LeftSidebar = () => {
           <p>Home</p>
         </NavLink>
         <div className="side-nav-div">
-          <div>
-            <p>PUBLIC</p>
+          <div className="side-nav-div2">
+            <p className="public">PUBLIC</p>
             <NavLink
               to="/Questions"
               className="side-nav-links"

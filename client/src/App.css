@@ -13,3 +13,74 @@
   padding: 24px;
   box-sizing: border-box;
 }
+.nav-avatar-btn {
+  display: flex;
+  margin: 0px 20px;
+}
+@media (max-width: 930px) {
+  .left-sidebar {
+    width: 100%;
+  }
+  .home-container-1 {
+    min-height: auto;
+    flex-direction: column;
+  }
+  .home-container-2 {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .home-container-2 .main-bar {
+    width: 100%;
+  }
+  .display-question-container {
+    /* flex-direction: column; */
+    flex-wrap: wrap;
+  }
+  .right-sidebar {
+    float: none;
+    margin: auto;
+    width: 95%;
+  }
+  .side-nav-links {
+    padding: 0px 3%;
+    justify-content: center;
+  }
+  .nav-avatar-btn {
+    margin: 10px 20px;
+  }
+  .public {
+    text-align: center;
+  }
+  .main-nav {
+    position: relative;
+  }
+  .navbar {
+    flex-wrap: wrap;
+    padding: 5px 0px;
+    justify-content: center;
+  }
+  .side-nav-div2 {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .side-nav {
+    margin: auto;
+  }
+  .right-sidebar-div-1 .right-sidebar-div-2 {
+    justify-content: center;
+  }
+  .navbar form input {
+    min-width: fit-content;
+    width: 80%;
+  }
+  .question-details-page {
+    width: 100% !important;
+  }
+  .user-details-container {
+    flex-wrap: wrap;
+  }
+  .edit-profile-btn {
+    margin: 10px 0px;
+  }
+}

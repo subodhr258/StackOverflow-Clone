@@ -1,12 +1,9 @@
 import axios from "axios";
-import {baseURL} from "../baseURL";
 
-const API = axios.create(
-  baseURL
-  // {
+const API = axios.create({
+  baseURL: "https://stackoverflow-backend-1afp.onrender.com/",
   // baseURL: "http://localhost:5000/",
-  // }
-);
+});
 
 API.interceptors.request.use((req) => {
   if (localStorage.getItem("Profile")) {

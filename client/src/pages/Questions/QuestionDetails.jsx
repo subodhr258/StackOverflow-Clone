@@ -22,7 +22,7 @@ const QuestionDetails = () => {
   const dispatch = useDispatch();
   const User = useSelector((state) => state.currentUserReducer);
   const location = useLocation();
-  const url = "https://stackoverflow-clone-frontend.netlify.app/";
+  const url = "https://stackoverflow-clone-frontend.netlify.app";
 
   const handlePostAnswer = (e, answerLength) => {
     e.preventDefault();
@@ -48,6 +48,7 @@ const QuestionDetails = () => {
     textarea.value = "";
   };
   const handleShare = () => {
+    console.log(location.pathname)
     copy(url + location.pathname);
     alert("Copied Url: " + url + location.pathname);
   };

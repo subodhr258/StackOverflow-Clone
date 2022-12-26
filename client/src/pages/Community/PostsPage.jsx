@@ -1,6 +1,6 @@
 import React from "react";
 import LeftSidebar from "../../components/LeftSidebar/LeftSidebar";
-import CommunityNavbar from "./CommunityNavbar";
+import CommunityNavbar from "../../components/Community/CommunityNavbar";
 import Posts from "../../components/Community/Posts";
 
 const PostsPage = () => {

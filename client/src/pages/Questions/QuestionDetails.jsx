@@ -48,7 +48,6 @@ const QuestionDetails = () => {
     textarea.value = "";
   };
   const handleShare = () => {
-    console.log(location.pathname)
     copy(url + location.pathname);
     alert("Copied Url: " + url + location.pathname);
   };
@@ -61,7 +60,7 @@ const QuestionDetails = () => {
   const handleDownvote = () => {
     dispatch(voteQuestion(id, "downVote", User.result._id));
   };
-  
+
   return (
     <div className="question-details-page">
       {questionsList.data === null ? (

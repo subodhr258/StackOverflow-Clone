@@ -1,5 +1,6 @@
 import React from "react";
 import Post from "./Post";
+import './Posts.css';
 
 const Posts = () => {
   const postData = [
@@ -32,7 +33,7 @@ const Posts = () => {
     },
   ];
   return (
-    <div className="posts-page">
+    <div className="posts">
       {postData.map((post) => (
         <Post postDetails={post} />
       ))}

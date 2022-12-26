@@ -23,7 +23,7 @@ const QuestionDetails = () => {
   const User = useSelector((state) => state.currentUserReducer);
   const location = useLocation();
   const url = "https://stackoverflow-clone-frontend.netlify.app";
-
+  
   const handlePostAnswer = (e, answerLength) => {
     e.preventDefault();
     if (User === null) {

@@ -1,76 +1,56 @@
-import mongoose from "mongoose"
-import {GridFsStorage} from "multer-gridfs-storage"
-import express from "express"
-import multer from "multer"
-import crypto from "crypto"
-import path from "path"
+import mongoose from "mongoose";
+import path from "path";
+import Posts from "../models/Post.js";
+import dotenv from "dotenv";
+dotenv.config();
 
-
-const router = express.Router();
 const mongoURI = process.env.CONNECTION_URL;
-const storage = new GridFsStorage({
-  url: mongoURI,
-  options: { useUnifiedTopology: true },
-  file: (req, file) => {
-    return new Promise((resolve, reject) => {
-      crypto.randomBytes(16, (err, buf) => {
-        if (err) {
-          return reject(err);
-        }
-        const filename = buf.toString("hex") + path.extname(file.originalname);
-        const fileInfo = {
-          filename: filename,
-          bucketName: "images",
-        };
-        resolve(fileInfo);
-      });
-    });
-  },
+const conn = mongoose.createConnection(mongoURI, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  // useCreateIndex: true,
 });
-
-const store = multer({
-  storage,
-  limits: { fileSize: 20000000 },
-  fileFilter: function (req, file, cb) {
-    checkFileType(file, cb); //just a filter to check the extension and mimetype of incoming file
-  },
-});
-
-function checkFileType(file, cb) {
-  const filetypes = /jpeg|jpg|png|gif|mp4|mkv|video\/mp4|video\/x-matroska/; // regex
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  console.log("mimetype", file.mimetype);
-  const mimetype = filetypes.test(file.mimetype);
-  console.log(extname, mimetype);
-  if (mimetype && extname) return cb(null, true);
-  cb("filetype");
-}
-
-export const uploadMiddleware = (req, res, next) => {
-  const upload = store.single("image");
-  upload(req, res, function (err) {
-    if (err instanceof multer.MulterError) {
-      return res.status(400).send("File too large");
-    } else if (err) {
-      if (err === "filetype") return res.status(400).send("Image files only.");
-      return res.sendStatus(500);
-    }
-    next();
+let gfs;
+conn.once("open", () => {
+  gfs = new mongoose.mongo.GridFSBucket(conn.db, {
+    bucketName: "images",
   });
-};
-export const upload = async (req, res) => {
+});
+
+export const uploadPost = async (req, res) => {
   const { file } = req;
   const { id } = file;
+  const { userId } = req.body;
+  const { userName } = req.body;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).send("invalid id");
+  }
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(404).send("invalid UserId");
+  }
   if (file.size > 5000000) {
     deleteImage(id);
     return res.status(400).send("file may not exceed 5MB");
   }
-  console.log("uploaded file:", file);
-  return res.send(file.id);
+  try {
+    const videofiletypes = /mp4|mkv/;
+    const isVideo = videofiletypes.test(
+      path.extname(file.originalname).toLowerCase()
+    );
+    const newPost = await Posts.create({
+      owner: userId,
+      fileId: id,
+      isVideo: isVideo,
+      ownerName: userName,
+    });
+    res.send(file.id);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
 };
 
-
-const deleteImage = (id) => {
+export const deleteImage = (id) => {
   if (!id || id === "undefined") return res.status(400).send("no image id");
   const _id = new mongoose.Types.ObjectId(id);
   gfs.delete(_id, (err) => {
@@ -78,7 +58,7 @@ const deleteImage = (id) => {
   });
 };
 
-router.get("/:id", ({ params: { id } }, res) => {
+export const getPost = async ({ params: { id } }, res) => {
   if (!id || id === "undefined") return res.status(400).send("no image id");
   const _id = new mongoose.Types.ObjectId(id);
   gfs.find({ _id }).toArray((err, files) => {
@@ -86,6 +66,14 @@ router.get("/:id", ({ params: { id } }, res) => {
       return res.status(400).send("no files exist");
     gfs.openDownloadStream(_id).pipe(res);
   });
-});
+};
 
-module.exports = router;
+export const getAllPosts = async (req, res) => {
+  try {
+    const PostList = await Posts.find();
+    PostList.map;
+    res.status(200).json(PostList);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};

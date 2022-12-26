@@ -2,12 +2,25 @@ import React, { useState } from "react";
 import axios from "axios";
 import LoadingDots from "../../assets/loading-dots.gif";
 import "./Create.scss";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { fetchAllPosts } from "../../actions/posts";
+import { useDispatch } from "react-redux";
+const baseURL = "http://localhost:5000";
+// const baseURL: "https://stackoverflow-backend-1afp.onrender.com/";
+const API = axios.create({
+  baseURL: baseURL,
+});
+
 const Create = () => {
+  const dispatch = useDispatch();
   const [file, setFile] = useState(null);
   const [inputContainsFile, setInputContainsFile] = useState(false);
   const [currentlyUploading, setCurrentlyUploading] = useState(false);
   const [imageId, setImageId] = useState(null);
   const [progress, setProgress] = useState(null);
+  const User = useSelector((state) => state.currentUserReducer);
+  const navigate = useNavigate();
 
   const handleFile = (event) => {
     setFile(event.target.files[0]);
@@ -17,8 +30,13 @@ const Create = () => {
   const fileUploadHandler = () => {
     const fd = new FormData();
     fd.append("image", file, file.name);
-    axios
-      .post("/posts/upload", fd, {
+    fd.append("userId", User.result._id);
+    fd.append("userName", User.result.name);
+    API.post(
+      "/posts/upload",
+      // { fd, UserId: User.result._id },
+      fd,
+      {
         onUploadProgress: (progressEvent) => {
           setProgress((progressEvent.loaded / progressEvent.total) * 100);
           console.log(
@@ -26,12 +44,15 @@ const Create = () => {
             Math.round((progressEvent.loaded / progressEvent.total) * 100)
           );
         },
-      })
+      }
+    )
       .then(({ data }) => {
         setImageId(data);
         setFile(null);
         setInputContainsFile(false);
         setCurrentlyUploading(false);
+        navigate("/Community/Posts");
+        dispatch(fetchAllPosts());
       })
       .catch((err) => {
         console.log(err);
@@ -43,7 +64,7 @@ const Create = () => {
           }
         } else if (err.response.status === 500) {
           console.log("db error");
-          alert("db error");
+          alert("db error: ", err.response.data);
         } else {
           console.log("other error");
         }
@@ -58,22 +79,28 @@ const Create = () => {
       fileUploadHandler();
     }
   };
-
   return (
     <div className="regular">
       <div className="image-section">
         {imageId ? (
           <>
-            <p>{imageId}</p>
+            {/* <p>{imageId}</p> */}
             <video width="320" height="240" controls>
-              <source src={`/api/image/${imageId}`} type="video/mp4" />
+              <source
+                src={`${baseURL}/posts/${imageId}`}
+                type="video/mp4"
+              />
             </video>
             <img
-              src={`/api/image/${imageId}`}
+              src={`${baseURL}/posts/${imageId}`}
               alt="regular version"
               className="image"
             />
-            <a className="link" href={`/api/image/${imageId}`} target="_blank">
+            <a
+              className="link"
+              href={`${baseURL}/posts/${imageId}`}
+              target="_blank"
+            >
               link
             </a>
           </>

@@ -28,9 +28,9 @@ export const uploadPost = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(userId)) {
     return res.status(404).send("invalid UserId");
   }
-  if (file.size > 5000000) {
+  if (file.size > 20000000) {
     deleteImage(id);
-    return res.status(400).send("file may not exceed 5MB");
+    return res.status(400).send("file may not exceed 20MB");
   }
   try {
     const videofiletypes = /mp4|mkv/;
@@ -70,10 +70,31 @@ export const getPost = async ({ params: { id } }, res) => {
 
 export const getAllPosts = async (req, res) => {
   try {
-    const PostList = await Posts.find();
+    const PostList = await Posts.find().sort({ datePosted: -1 });
     PostList.map;
     res.status(200).json(PostList);
   } catch (error) {
     res.status(400).json({ message: error.message });
+  }
+};
+
+export const likePost = async (req, res) => {
+  const { id: _id } = req.params;
+  const { userId } = req.body;
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(404).json({ message: "id not found" });
+  }
+  try {
+    const post = await Posts.findById(_id);
+    const likeIndex = post.likes.findIndex((id) => id === String(userId));
+    if (likeIndex === -1) {
+      post.likes.push(userId);
+    } else {
+      post.likes = post.likes.filter((id) => id !== String(userId));
+    }
+    await Posts.findByIdAndUpdate(_id, post);
+    res.status(200).json({ message: "likes updated successfully" });
+  } catch (error) {
+    res.status(404).json({ message: "id not found" });
   }
 };

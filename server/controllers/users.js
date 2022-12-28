@@ -12,6 +12,7 @@ export const getAllUsers = async (req, res) => {
         about: users.about,
         tags: users.tags,
         joinedOn: users.joinedOn,
+        friends: users.friends,
       });
     });
     res.status(200).json(allUserDetails);
@@ -36,6 +37,35 @@ export const updateProfile = async (req, res) => {
     );
     res.status(200).json(updatedProfile);
   } catch (error) {
+    res.status(405).json({ message: error.message });
+  }
+};
+
+export const toggleFriend = async (req, res) => {
+  const { id } = req.params; //friend user
+  const { userId } = req.body; //current user
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(404).send("User Id invalid");
+  }
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).send("Friend Id invalid");
+  }
+  try {
+    const user = await User.findById(userId);
+    const friendIndex = user.friends.findIndex(
+      (friendId) => friendId === String(id)
+    );
+    if (friendIndex === -1) {
+      user.friends.push(id);
+    } else {
+      user.friends = user.friends.filter((friendId) => friendId !== id);
+    }
+    const updatedUser = await User.findByIdAndUpdate(userId, user, {
+      new: true,
+    });
+    res.status(200).json(updatedUser);
+  } catch (error) {
+    console.log(error);
     res.status(405).json({ message: error.message });
   }
 };

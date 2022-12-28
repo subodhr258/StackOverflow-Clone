@@ -158,7 +158,6 @@ const Chatbot = () => {
       setIsAuth(false);
     }
   }, [User]);
-  console.log(User);
   return (
     <div>
       {isAuth ? (

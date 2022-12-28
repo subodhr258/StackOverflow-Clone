@@ -12,8 +12,16 @@ export const fetchAllUsers = () => async (dispatch) => {
 export const updateProfile = (id, updateData) => async (dispatch) => {
   try {
     const { data } = await api.updateProfile(id, updateData);
-    dispatch({type: 'UPDATE_CURRENT_USER', payload:data})
-    
+    dispatch({ type: "UPDATE_CURRENT_USER", payload: data });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const toggleFriend = (id, userId) => async (dispatch) => {
+  try {
+    const { data } = await api.toggleFriend(id, userId);
+    dispatch({ type: "UPDATE_CURRENT_USER", payload: data });
   } catch (error) {
     console.log(error);
   }

@@ -1,13 +1,15 @@
 .posts {
-  height: 495px;
+  flex: 2;
+  height: calc(100vh - 220px);
   width: 100%;
+  min-width: 580px;
   display: flex;
   flex-direction: column;
   align-items: center;
   overflow-x: hidden;
 }
 .post {
-  width: 300px;
+  width: 500px;
   margin: 15px auto;
   background-color: #ffc59c;
   padding: 15px 20px;
@@ -18,14 +20,32 @@
 .post h3 {
   margin: 0 0 10px 0;
 }
-.post .image-posted {
+.post-box {
   width: 100%;
+  text-align: center;
+  background-color: #ffb078;
+  box-shadow: 3px 3px 10px rgba(192 148 118 / 30%),
+    -3px -3px 10px rgb(192 148 118 / 30%);
+  border-radius: 5px;
+}
+.post .image-posted {
+  margin-bottom: -4px;
   max-height: 300px;
+  max-width: 100%;
+  border-radius: 5px;
 }
 .post .like-btn {
   width: 25px;
+  padding-top: 7px;
+  padding-left: 5px;
+}
+.post .like-btn-liked {
+  font-size: 25px;
 }
 .post .like-btn:hover {
+  cursor: pointer;
+}
+.post .like-btn-liked:hover {
   cursor: pointer;
 }
 .likes-div {
@@ -36,4 +56,44 @@
 }
 .likes-div h4 {
   margin: auto 10px;
+}
+.posts-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+.posts-filter {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex: 1;
+  height: 300px;
+}
+.post-username {
+  padding: 5px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.post-username h3 {
+  margin: 0;
+  margin-left: 5px;
+  color: black;
+}
+.posts-filter-btn {
+  width: 80%;
+  margin: 10px auto;
+  background-color: #ffe4d1;
+  border: none;
+  border-radius: 12px;
+  padding: 5px;
+  font-weight: 600;
+  font-size: medium;
+  color: rgb(83, 83, 83);
+}
+.posts-filter-btn:hover {
+  cursor: pointer;
+  background-color: #ffb078;
+}
+.btn-selected {
+  background-color: #ffb078;
 }

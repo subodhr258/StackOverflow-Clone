@@ -10,10 +10,7 @@ const PostSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  likes: {
-    type: [mongoose.Types.ObjectId],
-    ref: "User",
-  },
+  likes: { type: [String], default: [] },
   fileId: {
     type: String,
     required: true,
@@ -21,6 +18,10 @@ const PostSchema = mongoose.Schema({
   isVideo: {
     type: Boolean,
     required: true,
+  },
+  datePosted: {
+    type: Date,
+    default: Date.now,
   },
 });
 

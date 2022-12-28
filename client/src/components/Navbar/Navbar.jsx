@@ -47,8 +47,8 @@ const NavBar = () => {
         </Link>
         <form>
           <div className="form-contents">
-          <input type="text" placeholder="Search..." />
-          <img src={search} alt="search" width="18" className="search-icon" />
+            <input type="text" placeholder="Search..." />
+            <img src={search} alt="search" width="18" className="search-icon" />
           </div>
         </form>
         {User === null ? (
@@ -60,15 +60,15 @@ const NavBar = () => {
             <Avatar
               backgroundColor="#009dff"
               px="10px"
-              py="7px"
-              borderRadius="10px"
+              py="5px"
+              borderRadius="50px"
               color="white"
             >
               <Link
                 to={`/Users/${User?.result?._id}`}
                 style={{ color: "white", textDecoration: "None" }}
               >
-                {User.result.name.charAt(0).toUpperCase()}
+                {User?.result?.name.charAt(0).toUpperCase()}
               </Link>
             </Avatar>
             <button className="nav-item nav-links" onClick={handleLogout}>

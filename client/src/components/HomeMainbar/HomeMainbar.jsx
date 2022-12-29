@@ -9,10 +9,10 @@ const HomeMainbar = () => {
   const questionsList = useSelector((state) => state.questionsReducer);
 
   const location = useLocation();
-  const user = 1;
+  const User = useSelector((state) => state.currentUserReducer);
   const navigate = useNavigate();
   const checkAuth = () => {
-    if (user === null) {
+    if (User === null) {
       alert("login or signup to ask a question");
       navigate("/Auth");
     } else {

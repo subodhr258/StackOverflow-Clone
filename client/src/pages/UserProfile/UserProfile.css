@@ -9,6 +9,7 @@
 .user-details {
   display: flex;
   align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 .user-name {
@@ -95,6 +96,16 @@
 .add-friend-btn:hover {
   cursor: pointer;
 }
-.add-friend-btn p{
-  margin-left:10px;
+.add-friend-btn p {
+  margin-left: 10px;
+}
+.my-tags {
+  display: flex;
+  flex-wrap: wrap;
+}
+.my-tags .my-tag {
+  margin: 10px 10px;
+  padding: 5px 5px;
+  background-color: #e1ecf4;
+  color: #39739d;
 }

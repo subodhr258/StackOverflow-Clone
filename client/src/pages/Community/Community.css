@@ -36,3 +36,21 @@
 .com-navbar .active {
   background-color: #ffc59c;
 }
+.com-container {
+  text-align: center;
+  position: relative;
+  color: white;
+}
+.com-container img {
+  width: 60%;
+  margin: 50px auto;
+}
+.com-welcome {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-weight: 700;
+  font-size: 3vw;
+  text-decoration: dashed;
+}

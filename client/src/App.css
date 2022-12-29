@@ -63,6 +63,7 @@
   .side-nav-div2 {
     display: flex;
     justify-content: space-evenly;
+    flex-wrap:wrap;
   }
   .side-nav {
     margin: auto;

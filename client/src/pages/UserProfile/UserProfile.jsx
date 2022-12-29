@@ -18,22 +18,19 @@ const UserProfile = () => {
   const { id } = useParams();
   const users = useSelector((state) => state.usersReducer);
   const currentProfile = users.filter((user) => user?._id === id)[0];
-  const userId = useSelector((state) => state.currentUserReducer)?.result._id;
+  const userId = useSelector((state) => state.currentUserReducer)?.result?._id;
 
   const currentUser = users.filter((user) => user?._id === userId)[0];
   const [Switch, setSwitch] = useState(false);
   const dispatch = useDispatch();
   let isFriend = true;
-  if (
-    currentUser?.friends?.findIndex((friendId) => friendId === id) ===
-    -1
-  ) {
+  if (currentUser?.friends?.findIndex((friendId) => friendId === id) === -1) {
     isFriend = false;
   }
+  console.log("currentUser:", currentUser);
   const handleToggleFriend = () => {
     dispatch(toggleFriend(currentProfile?._id, currentUser?._id));
   };
-
   return (
     <div className="home-container-1">
       <LeftSidebar />
@@ -58,24 +55,25 @@ const UserProfile = () => {
                 </p>
               </div>
             </div>
-            {currentUser?.result?._id === id ? (
-              <button
-                type="button"
-                onClick={() => setSwitch(true)}
-                className="edit-profile-btn"
-              >
-                <FontAwesomeIcon icon={faPen} /> Edit Profile
-              </button>
-            ) : isFriend ? (
-              <button className="add-friend-btn" onClick={handleToggleFriend}>
-                <p>Remove Friend</p>
-              </button>
-            ) : (
-              <button className="add-friend-btn" onClick={handleToggleFriend}>
-                <FontAwesomeIcon icon={faUserPlus} />
-                <p>Add Friend</p>
-              </button>
-            )}
+            {userId &&
+              (currentUser?._id === id ? (
+                <button
+                  type="button"
+                  onClick={() => setSwitch(true)}
+                  className="edit-profile-btn"
+                >
+                  <FontAwesomeIcon icon={faPen} /> Edit Profile
+                </button>
+              ) : isFriend ? (
+                <button className="add-friend-btn" onClick={handleToggleFriend}>
+                  <p>Remove Friend</p>
+                </button>
+              ) : (
+                <button className="add-friend-btn" onClick={handleToggleFriend}>
+                  <FontAwesomeIcon icon={faUserPlus} />
+                  <p>Add Friend</p>
+                </button>
+              ))}
           </div>
           <>
             {Switch ? (

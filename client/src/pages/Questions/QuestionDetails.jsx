@@ -55,9 +55,17 @@ const QuestionDetails = () => {
     dispatch(deleteQuestion(id, navigate));
   };
   const handleUpvote = () => {
+    if (User === null) {
+      alert("Login or Signup to like a post");
+      navigate("/Auth");
+    }
     dispatch(voteQuestion(id, "upVote", User.result._id));
   };
   const handleDownvote = () => {
+    if (User === null) {
+      alert("Login or Signup to like a post");
+      navigate("/Auth");
+    }
     dispatch(voteQuestion(id, "downVote", User.result._id));
   };
 

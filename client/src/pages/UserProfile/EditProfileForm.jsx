@@ -4,14 +4,14 @@ import { useDispatch } from "react-redux";
 import { updateProfile } from "../../actions/users";
 
 const EditProfileForm = ({ currentUser, setSwitch }) => {
-  const [name, setName] = useState(currentUser?.result?.name);
-  const [about, setAbout] = useState(currentUser?.result?.about);
+  const [name, setName] = useState(currentUser?.name);
+  const [about, setAbout] = useState(currentUser?.about);
   const [tags, setTags] = useState([]);
   const dispatch = useDispatch();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updateProfile(currentUser?.result?._id, { name, about, tags }));
+    dispatch(updateProfile(currentUser?._id, { name, about, tags }));
     setSwitch(false)
   };
   return (

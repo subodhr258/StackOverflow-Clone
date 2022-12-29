@@ -52,7 +52,7 @@ const NavBar = () => {
           </div>
         </form>
         {User === null ? (
-          <Link to="/Auth" className="nav-item nav-links">
+          <Link to="/Auth/Login" className="nav-item nav-links">
             Log in
           </Link>
         ) : (

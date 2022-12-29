@@ -13,7 +13,6 @@ const AskQuestion = () => {
   const navigate = useNavigate();
   const handleSubmit = (e) => {
     e.preventDefault();
-    // console.log({ questionTitle, questionBody, questionTags });
     dispatch(
       askQuestion({
         questionTitle,

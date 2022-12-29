@@ -1,44 +1,44 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams, Link } from "react-router-dom";
 import "./Auth.css";
 import icon from "../../assets/icon.png";
 import AboutAuth from "./AboutAuth";
 import { signup, login } from "../../actions/auth";
 const Auth = () => {
-  const [isSignup, setIsSignup] = useState(false);
+  const { isSignup } = useParams();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleSwitch = () => {
-    setIsSignup(!isSignup);
-  };
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!email || !password) {
       alert("Enter email and password");
       return;
     }
-    if (isSignup) {
+    if (isSignup==="Signup") {
       if (!name) {
         alert("Enter a name to continue");
       }
       dispatch(signup({ name, email, password }, navigate));
     } else {
-      dispatch(login({ email, password }, navigate));
+      dispatch(login({ email, password }, navigate, setErrorMessage));
     }
   };
+
+  const [errorMessage, setErrorMessage] = useState(null);
+
   return (
     <section className="auth-section">
-      {isSignup && <AboutAuth />}
+      {isSignup==="Signup" && <AboutAuth />}
       <div className="auth-container-2">
-        {!isSignup && (
+        {isSignup==="Login" && (
           <img src={icon} alt="stack overflow" className="login-logo" />
         )}
         <form onSubmit={handleSubmit}>
-          {isSignup && (
+          {isSignup==="Signup" && (
             <label htmlFor="name">
               <h4>Display Name</h4>
               <input
@@ -59,13 +59,14 @@ const Auth = () => {
               id="email"
               onChange={(e) => {
                 setEmail(e.target.value);
+                setErrorMessage(null);
               }}
             />
           </label>
           <label htmlFor="password">
             <div style={{ display: "flex", justifyContent: "space-between" }}>
               <h4>Password</h4>
-              {!isSignup && (
+              {!isSignup==="Login" && (
                 <p style={{ color: "#007ac6", fontSize: "13px" }}>
                   forgot password?
                 </p>
@@ -77,16 +78,17 @@ const Auth = () => {
               id="password"
               onChange={(e) => {
                 setPassword(e.target.value);
+                setErrorMessage(null);
               }}
             />
-            {isSignup && (
+            {isSignup==="Signup" && (
               <p style={{ color: "#666767", fontSize: "13px" }}>
                 Passwords must contain at least eight characters, including at
                 least 1 letter and 1 number.
               </p>
             )}
           </label>
-          {isSignup && (
+          {isSignup==="Signup" && (
             <label htmlFor="check">
               <input type="checkbox" id="check" />
               <p style={{ fontSize: "13px", margin: "10px" }}>
@@ -96,9 +98,9 @@ const Auth = () => {
             </label>
           )}
           <button type="submit" className="auth-btn">
-            {isSignup ? "Sign up" : "Login"}
+            {isSignup==="Signup" ? "Sign up" : "Login"}
           </button>
-          {isSignup && (
+          {isSignup==="Signup" && (
             <p style={{ color: "#666767", fontSize: "13px" }}>
               By clicking "Sign up", you agree to our
               <span className="terms"> terms of service</span>,
@@ -106,16 +108,19 @@ const Auth = () => {
               <span className="terms"> cookie policy</span>.
             </p>
           )}
+          {isSignup==="Login" && <p className="error-message">{errorMessage}</p>}
         </form>
         <p>
-          {isSignup ? "already have an account?" : "Don't have an account?"}
-          <button
-            type="button"
-            className="handle-switch-btn"
-            onClick={handleSwitch}
-          >
-            {isSignup ? "Log In" : "Sign Up"}
-          </button>
+          {isSignup==="Signup" ? "already have an account?" : "Don't have an account?"}
+          
+          <Link to={isSignup==="Login"? "/Auth/Signup":"/Auth/Login"} className="nav-item nav-links">
+            <button
+              type="button"
+              className="handle-switch-btn"
+            >
+              {isSignup==="Signup" ? "Log In" : "Sign Up"}
+            </button>
+          </Link>
         </p>
       </div>
     </section>

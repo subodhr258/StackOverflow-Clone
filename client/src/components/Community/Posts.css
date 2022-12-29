@@ -62,11 +62,25 @@
   flex-wrap: wrap;
 }
 .posts-filter {
+  margin: 20px 0px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   flex: 1;
-  height: 300px;
+  background-color: #ffe4d1;
+  border-radius: 20px;
+}
+.posts-filter-header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  text-align: center;
+  background-color: #ffb078;
+  border-radius: 20px 20px 0px 0px;
+}
+.posts-filter h3 {
+  margin: 20px 10px;
 }
 .post-username {
   padding: 5px;
@@ -96,4 +110,30 @@
 }
 .btn-selected {
   background-color: #ffb078;
+}
+
+@media (max-width: 930px) {
+  .posts {
+    min-width: 350px;
+    height: 100%;
+  }
+  .post {
+    width: 80%;
+    margin: 20px auto;
+  }
+  .posts-filter {
+    min-width: 200px;
+    height: fit-content;
+    margin:20px;
+  }
+  .post .image-posted {
+    max-height: 100%;
+    max-width: 100%;
+  }
+  .post-box {
+    width: 100%;
+  }
+  .home-container-2{
+    padding:0;
+  }
 }

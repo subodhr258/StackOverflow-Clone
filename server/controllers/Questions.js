@@ -71,7 +71,6 @@ export const voteQuestion = async (req, res) => {
       }
     }
     await Questions.findByIdAndUpdate(_id, question);
-    // console.log("voted successfully\n", question);
     res.status(200).json({ message: "voted successfully" });
   } catch (error) {
     res.status(404).json({ message: "id not found" });

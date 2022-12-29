@@ -16,6 +16,7 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  text-decoration: none;
 }
 .com-nav-item {
   /* background-color: #ffe4d1; */

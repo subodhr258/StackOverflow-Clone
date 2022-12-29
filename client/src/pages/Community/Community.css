@@ -30,6 +30,7 @@
   font-size: larger;
   font-weight: 700;
   border-radius: 20px;
+  text-decoration: none;
 }
 .com-nav-item:hover {
   background-color: #ffc59c;

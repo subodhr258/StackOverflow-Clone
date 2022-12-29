@@ -24,7 +24,7 @@ const Posts = () => {
   const handleFriends = () => {
     if (userId === undefined) {
       alert("Login or Signup to answer a question");
-      navigate("/Auth");
+      navigate("/Auth/Login");
     }
     setFilter("friends");
     setFilteredPostsList(
@@ -37,7 +37,7 @@ const Posts = () => {
   const handleMyPosts = () => {
     if (userId === undefined) {
       alert("Login or Signup to answer a question");
-      navigate("/Auth");
+      navigate("/Auth/Login");
     }
     setFilter("myposts");
     setFilteredPostsList(

@@ -20,7 +20,7 @@ const Create = () => {
   const handleClick = () => {
     if (User === null) {
       alert("Login or Signup to create a post");
-      navigate("/Auth");
+      navigate("/Auth/Login");
     }
     if (file) {
       const fd = new FormData();

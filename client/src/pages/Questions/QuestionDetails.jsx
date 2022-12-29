@@ -23,12 +23,12 @@ const QuestionDetails = () => {
   const User = useSelector((state) => state.currentUserReducer);
   const location = useLocation();
   const url = "https://stackoverflow-clone-frontend.netlify.app";
-  
+
   const handlePostAnswer = (e, answerLength) => {
     e.preventDefault();
     if (User === null) {
       alert("Login or Signup to answer a question");
-      navigate("/Auth");
+      navigate("/Auth/Login");
     } else {
       if (answer === "") {
         alert("Enter an answer before submitting");
@@ -57,14 +57,14 @@ const QuestionDetails = () => {
   const handleUpvote = () => {
     if (User === null) {
       alert("Login or Signup to like a post");
-      navigate("/Auth");
+      navigate("/Auth/Login");
     }
     dispatch(voteQuestion(id, "upVote", User.result._id));
   };
   const handleDownvote = () => {
     if (User === null) {
       alert("Login or Signup to like a post");
-      navigate("/Auth");
+      navigate("/Auth/Login");
     }
     dispatch(voteQuestion(id, "downVote", User.result._id));
   };

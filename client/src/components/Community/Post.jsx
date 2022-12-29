@@ -21,7 +21,7 @@ const Post = ({ postDetails }) => {
   const handleLike = () => {
     if (User === null) {
       alert("Login or Signup to like a post");
-      navigate("/Auth");
+      navigate("/Auth/Login");
     }
     dispatch(likePost(postDetails._id, User?.result?._id));
   };

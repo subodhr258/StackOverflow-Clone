@@ -22,7 +22,7 @@ const Friends = () => {
           )) : <h3>No friends yet. Add friends and you'll see their posts here!</h3>}
         </>
       ) : (
-        <Link to="/Auth">Please Login or Signup to see your friends</Link>
+        <Link to="/Auth/Login">Please Login or Signup to see your friends</Link>
       )}
     </div>
   );

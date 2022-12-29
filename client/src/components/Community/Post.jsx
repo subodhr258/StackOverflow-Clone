@@ -7,7 +7,7 @@ import { likePost } from "../../actions/posts";
 import Avatar from "../Avatar/Avatar";
 
 // const baseURL = "http://localhost:5000";
-const baseURL = "https://stackoverflow-backend-1afp.onrender.com/";
+const baseURL = "https://stackoverflow-backend-1afp.onrender.com";
 
 const Post = ({ postDetails }) => {
   const User = useSelector((state) => state.currentUserReducer);

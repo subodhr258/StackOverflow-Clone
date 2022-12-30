@@ -6,7 +6,7 @@ const ContactUs = () => {
       <div className='contact-div'>
         <h3>Contact Details</h3>
         <p>Email: SampleEmail@gmail.com</p>
-        <p>Phone: +91 8000 8135</p>
+        <p>Phone: +91 8888 8888</p>
     </div>
   )
 }

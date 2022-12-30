@@ -54,7 +54,7 @@ export const deleteImage = (id) => {
   if (!id || id === "undefined") return res.status(400).send("no image id");
   const _id = new mongoose.Types.ObjectId(id);
   gfs.delete(_id, (err) => {
-    if (err) return res.status(500).send("image deletion error");
+    if (err) return err;
   });
 };
 
@@ -96,5 +96,29 @@ export const likePost = async (req, res) => {
     res.status(200).json({ message: "likes updated successfully" });
   } catch (error) {
     res.status(404).json({ message: "id not found" });
+  }
+};
+
+export const deletePost = async (req, res) => {
+  const { id } = req.params;
+  const { fileId } = req.body;
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(404).json({ message: "Invalid Post ID" });
+  }
+  if (!mongoose.Types.ObjectId.isValid(fileId)) {
+    return res.status(404).json({ message: "Invalid File ID" });
+  }
+  try {
+    const _id = new mongoose.Types.ObjectId(fileId);
+    gfs.delete(_id, (err) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({ message: err.message });
+      }
+    });
+    await Posts.findByIdAndDelete(id);
+    res.status(200).json({ message: "Post deleted successfully" });
+  } catch (error) {
+    console.log(error);
   }
 };

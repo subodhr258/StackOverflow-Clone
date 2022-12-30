@@ -47,3 +47,13 @@ export const likePost = (id, userId) => async (dispatch) => {
     console.log(error);
   }
 };
+
+export const deletePost = (id,fileId) => async (dispatch) => {
+  try {
+    const { data } = await api.deletePost(id,fileId);
+    dispatch(fetchAllPosts());
+  } catch (error) {
+    console.log(error);
+  }
+};
+

@@ -52,7 +52,7 @@ const g = () => {
 
 const Chatbot = () => {
   const User = useSelector((state) => state.currentUserReducer);
-  const [isAuth, setIsAuth] = useState(false);
+  const [isAuth, setIsAuth] = useState(true);
   const defaultStep = [
     {
       id: "login",
@@ -62,7 +62,7 @@ const Chatbot = () => {
   const LoggedInStep = [
     {
       id: "1",
-      message: `Hello ${User?.result?.name}, What do you want to check?`,
+      message: `Hello User, What do you want to check?`,
       trigger: "options",
     },
     {
@@ -147,17 +147,17 @@ const Chatbot = () => {
       end: true,
     },
   ];
-  useEffect(() => {
-    if (User === null && !isAuth) return;
-    if (User !== null && isAuth) return;
+  // useEffect(() => {
+  //   if (User === null && !isAuth) return;
+  //   if (User !== null && isAuth) return;
 
-    if (User !== null && !isAuth) {
-      setIsAuth(true);
-    }
-    if (User === null && isAuth) {
-      setIsAuth(false);
-    }
-  }, [User]);
+  //   if (User !== null && !isAuth) {
+  //     setIsAuth(true);
+  //   }
+  //   if (User === null && isAuth) {
+  //     setIsAuth(false);
+  //   }
+  // }, [User]);
   return (
     <div>
       {isAuth ? (

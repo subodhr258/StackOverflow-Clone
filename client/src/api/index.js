@@ -44,3 +44,5 @@ export const createPost = (fd) => API.post("/posts/upload", fd);
 export const getAllPosts = () => API.get("/posts/get");
 export const likePost = (id, userId) =>
   API.patch(`/posts/like/${id}`, { userId });
+export const deletePost = (id, fileId) =>
+  API.patch(`/posts/delete/${id}`, { fileId });

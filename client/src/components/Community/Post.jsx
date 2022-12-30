@@ -5,6 +5,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link } from "react-router-dom";
 import { likePost } from "../../actions/posts";
 import Avatar from "../Avatar/Avatar";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { deletePost } from "../../actions/posts";
 
 // const baseURL = "http://localhost:5000";
 const baseURL = "https://stackoverflow-backend-1afp.onrender.com";
@@ -22,23 +25,41 @@ const Post = ({ postDetails }) => {
     if (User === null) {
       alert("Login or Signup to like a post");
       navigate("/Auth/Login");
+      return;
     }
-    dispatch(likePost(postDetails._id, User?.result?._id));
+    dispatch(likePost(postDetails?._id, User?.result?._id));
+  };
+  const handleDeletePost = () => {
+    if (User === null) {
+      alert("Login or Signup to like a post");
+      navigate("/Auth/Login");
+      return;
+    }
+    dispatch(deletePost(postDetails?._id, postDetails?.fileId));
   };
   return (
     <div className="post">
-      <Link to={`/Users/${postDetails.owner}`} className="post-username">
-        <Avatar
-          backgroundColor="#009dff"
-          px="10px"
-          py="5px"
-          borderRadius="50px"
-          color="white"
-        >
-          {postDetails?.ownerName.charAt(0).toUpperCase()}
-        </Avatar>
-        <h3>{postDetails?.ownerName}</h3>
-      </Link>
+      <div className="post-top">
+        <Link to={`/Users/${postDetails.owner}`} className="post-username">
+          <Avatar
+            backgroundColor="#009dff"
+            px="10px"
+            py="5px"
+            borderRadius="50px"
+            color="white"
+          >
+            {postDetails?.ownerName.charAt(0).toUpperCase()}
+          </Avatar>
+          <h3>{postDetails?.ownerName}</h3>
+        </Link>
+        {postDetails.owner === userId && (
+          <FontAwesomeIcon
+            icon={faTrashCan}
+            className="post-delete"
+            onClick={handleDeletePost}
+          />
+        )}
+      </div>
       {postDetails.isVideo ? (
         <div className="post-box">
           <video className="image-posted" controls>

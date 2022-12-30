@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import ChatBotSimple from "react-simple-chatbot";
 import ChatBotDefault from "./ChatbotDefault";
 import ContactUs from "./ContactUs";
+import SearchResult from "./SearchResult";
 
 const c = () => {
   return (
@@ -139,11 +140,12 @@ const Chatbot = () => {
     {
       id: "userInput",
       user: true,
-      trigger: "endInput",
+      trigger: "API",
     },
     {
-      id: "endInput",
-      message: "Thanks for the input, we'll get back to you later!",
+      id: "API",
+      component: <SearchResult />,
+      waitAction: true,
       end: true,
     },
   ];

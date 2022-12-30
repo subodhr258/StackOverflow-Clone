@@ -1,7 +1,17 @@
-.contact-div{
-    border-radius: 0px 10px 10px 10px ;
-    padding: 10px 0px;
-    width: 100%;
-    background-color: white;
-    color:black;
+.contact-div {
+  border-radius: 0px 10px 10px 10px;
+  padding: 10px 0px;
+  width: 100%;
+  background-color: white;
+  color: black;
+}
+.get-results-btn {
+  border: none;
+  color: white;
+  background-color: rgb(110, 110, 255);
+  padding: 10px;
+  border-radius: 12px;
+}
+.get-results-btn:hover {
+  cursor: pointer;
 }

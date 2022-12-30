@@ -16,7 +16,9 @@ const SearchResult = (props) => {
   return (
     <div>
       <h1>Here are my answers for "{steps.userInput.message}"</h1>
-      <button onClick={handleSearch} className="get-results-btn">getResults</button>
+      <button onClick={handleSearch} className="get-results-btn">
+        Get Results
+      </button>
       <ol>
         {result?.items?.slice(0, 5).map((item) => (
           <li key={item?.link}>

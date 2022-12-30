@@ -62,7 +62,7 @@ const Chatbot = () => {
   const LoggedInStep = [
     {
       id: "1",
-      message: `Hello User, What do you want to check?`,
+      message: `Hello User, What do you want to do?`,
       trigger: "options",
     },
     {

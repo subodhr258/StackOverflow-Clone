@@ -113,16 +113,42 @@ describe('APIClient', () => {
       expect(result).toEqual(mockResponse);
     });
 
-    test('should debounce autocomplete requests with same URL', async () => {
+    test('should debounce autocomplete requests with different parameters separately', async () => {
+      jest.useFakeTimers();
+      
+      const mockResponse1 = { data: { suggestions: ['te'] }, status: 200 };
+      const mockResponse2 = { data: { suggestions: ['test'] }, status: 200 };
+      client.api.get.mockResolvedValueOnce(mockResponse1);
+      client.api.get.mockResolvedValueOnce(mockResponse2);
+
+      // Make first autocomplete request
+      const promise1 = client.get('/api/autocomplete', { params: { q: 'te' } });
+      
+      // Make second request quickly with different params - should NOT cancel first
+      const promise2 = client.get('/api/autocomplete', { params: { q: 'test' } });
+
+      // Should not have called the API yet (both are debounced)
+      expect(client.api.get).toHaveBeenCalledTimes(0);
+
+      // Fast-forward past debounce delay
+      jest.advanceTimersByTime(200);
+
+      await Promise.all([promise1, promise2]);
+
+      // Should have made two API calls (one for each different parameter set)
+      expect(client.api.get).toHaveBeenCalledTimes(2);
+    });
+
+    test('should debounce autocomplete requests with identical parameters', async () => {
       jest.useFakeTimers();
       
       const mockResponse = { data: { suggestions: ['test'] }, status: 200 };
       client.api.get.mockResolvedValue(mockResponse);
 
       // Make first autocomplete request
-      client.get('/api/autocomplete', { params: { q: 'te' } });
+      client.get('/api/autocomplete', { params: { q: 'test' } });
       
-      // Make second request quickly - should cancel first
+      // Make second request quickly with same params - should cancel first
       const finalPromise = client.get('/api/autocomplete', { params: { q: 'test' } });
 
       // Should not have called the API yet
@@ -133,7 +159,7 @@ describe('APIClient', () => {
 
       await finalPromise;
 
-      // Should have only made one API call (for the final request)
+      // Should have made only one API call (identical requests are debounced)
       expect(client.api.get).toHaveBeenCalledTimes(1);
     });
 

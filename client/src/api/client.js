@@ -78,10 +78,10 @@ class APIClient {
     
     if (shouldDebounce) {
       return new Promise((resolve, reject) => {
-        // Use URL for debounce key to debounce same endpoint calls
-        const debounceKey = url;
+        // Use cache key (method + url + params) for debounce key to debounce same endpoint calls with different params independently
+        const debounceKey = this._createCacheKey('GET', url, params);
         
-        // Clear existing timer for this URL
+        // Clear existing timer for this key
         if (this.debounceTimers.has(debounceKey)) {
           clearTimeout(this.debounceTimers.get(debounceKey));
         }

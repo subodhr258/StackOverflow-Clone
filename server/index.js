@@ -6,6 +6,9 @@ import userRoutes from "./routes/users.js";
 import questionRoutes from "./routes/Questions.js";
 import answerRoutes from "./routes/Answers.js";
 import postRoutes from "./routes/Posts.js";
+// Import controllers for batch processing
+import { AskQuestion } from "./controllers/Questions.js";
+import { uploadPost } from "./controllers/Posts.js";
 
 const app = express();
 dotenv.config();
@@ -27,41 +30,56 @@ app.post("/api/batch", async (req, res) => {
 
     const responses = [];
     
+    // Route mapping for batch processing
+    const routeMap = {
+      'POST /questions/Ask': AskQuestion,
+      'POST /posts/upload': uploadPost,
+      // Add more routes as needed
+    };
+    
     for (const request of requests) {
       try {
         const { method, url, data, headers } = request;
         
-        // Create a mock request object for internal routing
+        // Create a more complete mock request object for internal routing
         const mockReq = {
           method: method.toUpperCase(),
           url,
-          body: data,
+          originalUrl: url,
+          path: url.split('?')[0],
+          body: data || {},
           headers: { ...req.headers, ...headers },
           params: {},
-          query: {}
+          query: {},
+          ip: req.ip || '127.0.0.1',
+          protocol: req.protocol || 'http',
+          hostname: req.hostname || 'localhost',
+          get: function(header) { return this.headers[header.toLowerCase()]; },
+          // Add any additional Express request properties as needed
         };
         
         // Create a mock response object to capture the response
         let mockRes = {
           statusCode: 200,
           data: null,
+          headers: {},
           json: function(data) { this.data = data; return this; },
           status: function(code) { this.statusCode = code; return this; },
-          send: function(data) { this.data = data; return this; }
+          send: function(data) { this.data = data; return this; },
+          setHeader: function(name, value) { this.headers[name] = value; return this; },
+          // Add any additional Express response properties as needed
         };
 
-        // Route the request internally (simplified routing for POST requests)
-        if (method.toUpperCase() === 'POST') {
-          if (url.includes('/questions/Ask')) {
-            // Import and call question controller
-            const { AskQuestion } = await import('./controllers/Questions.js');
-            await AskQuestion(mockReq, mockRes);
-          } else if (url.includes('/posts/upload')) {
-            // Import and call post controller
-            const { uploadPost } = await import('./controllers/Posts.js');
-            await uploadPost(mockReq, mockRes);
-          }
-          // Add more routes as needed
+        // Route the request using the route mapping
+        const routeKey = `${method.toUpperCase()} ${url}`;
+        const handler = routeMap[routeKey];
+        
+        if (handler) {
+          await handler(mockReq, mockRes);
+        } else {
+          // Handle unmapped routes
+          mockRes.statusCode = 404;
+          mockRes.data = { error: `Route ${routeKey} not found in batch handler` };
         }
 
         responses.push({

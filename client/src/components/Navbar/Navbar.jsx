@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import logo from "../../assets/logo.png";
@@ -6,11 +6,22 @@ import search from "../../assets/search-solid.svg";
 import Avatar from "../../components/Avatar/Avatar";
 import "./Navbar.css";
 import { setCurrentUser } from "../../actions/currentUser";
+import { client } from "../../api";
 import decode from "jwt-decode";
 
 const NavBar = () => {
   const dispatch = useDispatch();
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
   var User = useSelector((state) => state.currentUserReducer);
+
+  const navigate = useNavigate();
+
+  const handleLogout = React.useCallback(() => {
+    dispatch({ type: "LOGOUT" });
+    navigate("/");
+    dispatch(setCurrentUser(null));
+  }, [dispatch, navigate]);
 
   useEffect(() => {
     const token = User?.token;
@@ -21,14 +32,36 @@ const NavBar = () => {
       }
     }
     dispatch(setCurrentUser(JSON.parse(localStorage.getItem("Profile"))));
-  }, [dispatch, User?.token]);
+  }, [dispatch, User?.token, handleLogout]);
 
-  const navigate = useNavigate();
+  const handleSearch = async (query) => {
+    if (!query.trim()) {
+      return;
+    }
 
-  const handleLogout = () => {
-    dispatch({ type: "LOGOUT" });
-    navigate("/");
-    dispatch(setCurrentUser(null));
+    setIsSearching(true);
+    try {
+      // Use the new API client with debouncing for search
+      await client.get('/api/search', { q: query });
+    } catch (error) {
+      console.log('Search error:', error);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      // Navigate to search results or perform search action
+      navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    handleSearch(query);
   };
   return (
     <nav className="main-nav">
@@ -45,10 +78,16 @@ const NavBar = () => {
         <Link to="/" className="nav-item nav-btn">
           For Teams
         </Link>
-        <form>
+        <form onSubmit={handleSearchSubmit}>
           <div className="form-contents">
-            <input type="text" placeholder="Search..." />
+            <input 
+              type="text" 
+              placeholder="Search..." 
+              value={searchQuery}
+              onChange={handleSearchChange}
+            />
             <img src={search} alt="search" width="18" className="search-icon" />
+            {isSearching && <span className="search-loading">...</span>}
           </div>
         </form>
         {User === null ? (
